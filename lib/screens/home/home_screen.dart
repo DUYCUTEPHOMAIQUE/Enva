@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:enva/services/services.dart';
 
 import 'package:enva/screens/screens.dart';
 
 class HomeScreen extends StatelessWidget {
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-      clientId:
-          "135461409715-8p8s2lgp86ufunhllf0dkud5abad81qt.apps.googleusercontent.com");
+  final SupabaseClient client = Supabase.instance.client;
+  final GoogleSignIn _googleSignIn =
+      GoogleSignIn(clientId: dotenv.env['GOOGLE_CLIENT_ID']!);
   final FacebookAuth _facebookAuth = FacebookAuth.instance;
 
   // Hàm đăng nhập bằng Google
@@ -32,10 +35,15 @@ class HomeScreen extends StatelessWidget {
           provider: OAuthProvider.google,
           idToken: idToken,
           accessToken: accessToken);
+
       Fluttertoast.showToast(msg: "GG OK");
     } catch (e) {
       print("Google Sign-In Error: $e");
     }
+  }
+
+  Future<void> _shareLink() async {
+    Share.share('This is facebook https://www.facebook.com/');
   }
 
   // Hàm đăng nhập bằng Facebook
@@ -66,6 +74,30 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
+  Future<void> _addData() async {
+    final user = client.auth.currentUser;
+    Fluttertoast.showToast(msg: "User: ${user}");
+    final response = await client.from('cards').insert({
+      'owner_id': user!.id,
+      'title': "Card_3",
+      'description': "Description_1",
+      'image_url': 'img_url',
+      'location': 'Ha Noi',
+      'created_at': DateTime.now().toIso8601String(),
+      'background_image_url': user.userMetadata!['avatar_url'] ?? '',
+    });
+
+    print(response);
+
+    print('OKKK');
+    return response.data;
+  }
+
+  Future<void> _getData() async {
+    final user = client.auth.currentUser;
+    final response = await client.from('cards').select().eq('id', user!.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,6 +124,21 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: _signInWithFacebook,
               child: Text("Login with Facebook"),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _shareLink,
+              child: Text("Share link"),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _addData,
+              child: Text("+ Data"),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _getData,
+              child: Text("Get Data"),
             ),
           ],
         ),

@@ -1,0 +1,4 @@
+# Configuration for the slang package
+input_directory: assets/i18n
+output_directory: lib/generated
+fallback_locale: en
