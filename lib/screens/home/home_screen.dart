@@ -1,3 +1,4 @@
+import 'package:enva/screens/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -106,6 +107,20 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            if (Supabase.instance.client.auth.currentUser != null)
+              Column(
+                children: [
+                  Text(
+                      "User: ${Supabase.instance.client.auth.currentUser!.email}"),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await Supabase.instance.client.auth.signOut();
+                      Fluttertoast.showToast(msg: "Sign out successfully");
+                    },
+                    child: Text("Sign out"),
+                  ),
+                ],
+              ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -114,6 +129,16 @@ class HomeScreen extends StatelessWidget {
                 );
               },
               child: Text("Go to Login"),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignUpScreen()),
+                );
+              },
+              child: Text("Go to Sign Up"),
             ),
             SizedBox(height: 20),
             ElevatedButton(

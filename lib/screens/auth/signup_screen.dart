@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class LoginScreen extends StatefulWidget {
+class SignUpScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   String _errorMessage = "";
 
-  Future<void> _signIn() async {
+  Future<void> _signUp() async {
+    final name = _nameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
@@ -25,14 +27,15 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     try {
-      final response = await Supabase.instance.client.auth.signInWithPassword(
+      final response = await Supabase.instance.client.auth.signUp(
         email: email,
         password: password,
+        data: {"name": name},
       );
 
       if (response.session != null) {
         Fluttertoast.showToast(
-            msg: "Login successfully ${response.user!.userMetadata!['name']}");
+            msg: "Sign up successfully ${response.user!.id}");
         setState(() {
           _errorMessage = response.session!.user!.email!;
         });
@@ -54,12 +57,17 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
+      appBar: AppBar(title: Text("Sign Up")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            TextField(
+              controller: _nameController,
+              decoration: InputDecoration(labelText: "Name"),
+            ),
+            SizedBox(height: 8),
             TextField(
               controller: _emailController,
               decoration: InputDecoration(labelText: "Email"),
@@ -72,8 +80,8 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _signIn,
-              child: Text("Sign In"),
+              onPressed: _signUp,
+              child: Text("Sign Up"),
             ),
             if (_errorMessage.isNotEmpty)
               Padding(
