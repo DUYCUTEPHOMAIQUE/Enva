@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,12 +25,14 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     try {
-      final response = await Supabase.instance.client.auth.signUp(
+      final response = await Supabase.instance.client.auth.signInWithPassword(
         email: email,
         password: password,
       );
 
       if (response.session != null) {
+        Fluttertoast.showToast(
+            msg: "Sign up successfully ${response.user!.id}");
         setState(() {
           _errorMessage = response.session!.user!.email!;
         });
