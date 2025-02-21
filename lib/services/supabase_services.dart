@@ -20,12 +20,17 @@ class SupabaseServices {
     final googleSignIn = GoogleSignIn(
       clientId: dotenv.env['GOOGLE_CLIENT_ID']!,
     );
+    Fluttertoast.showToast(msg: 'OKKKq111');
+
     final googleUser = await googleSignIn.signIn();
+
     final GoogleSignInAuthentication googleAuth =
         await googleUser!.authentication;
 
     final accessToken = googleAuth.accessToken;
     final idToken = googleAuth.idToken;
+    print('accessToken: $accessToken');
+    print('idToken: $idToken');
 
     if (accessToken == null || idToken == null) {
       throw 'Google Sign-In Error: accessToken or idToken is null';
@@ -35,6 +40,7 @@ class SupabaseServices {
       idToken: idToken,
       accessToken: accessToken,
     );
+    Fluttertoast.showToast(msg: 'OKKK');
     return response;
   }
 
@@ -44,7 +50,7 @@ class SupabaseServices {
       email: email,
       password: password,
     );
-
+    print(response);
     return response;
   }
 }

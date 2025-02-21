@@ -3,7 +3,11 @@
 import 'dart:ui';
 
 import 'package:enva/blocs/auth/auth_bloc.dart';
+import 'package:enva/blocs/auth/auth_event.dart';
 import 'package:enva/blocs/auth/auth_state.dart';
+import 'package:enva/screens/auth/widgets/widgets.dart';
+import 'package:enva/services/services.dart';
+import 'package:enva/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rive/rive.dart';
@@ -12,8 +16,13 @@ class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key? key}) : super(key: key);
 
   void _showAuthSheet(BuildContext context) {
+    final TextEditingController _nameController = TextEditingController();
+    final TextEditingController _emailController = TextEditingController();
+    final TextEditingController _passwordController = TextEditingController();
     showModalBottomSheet(
       context: context,
+      showDragHandle: true, // Hiển thị drag handle
+
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (context) => BackdropFilter(
@@ -21,7 +30,7 @@ class DashboardScreen extends StatelessWidget {
         child: Container(
           height: MediaQuery.of(context).size.height * 0.7,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.9),
+            color: AppColors.snowWhite,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: Column(
@@ -39,6 +48,7 @@ class DashboardScreen extends StatelessWidget {
               const Text(
                 'Welcome',
                 style: TextStyle(
+                  fontFamily: 'Aldrich',
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
@@ -48,21 +58,37 @@ class DashboardScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
-                    _buildAuthButton(
-                      context,
-                      'Sign In',
-                      Colors.black,
-                      () => Navigator.pushNamed(context, '/login'),
-                    ),
+                    buildTextField(
+                        label: 'EMAIL', controller: _emailController),
                     const SizedBox(height: 16),
-                    _buildAuthButton(
-                      context,
-                      'Sign Up',
-                      Colors.white,
-                      () => Navigator.pushNamed(context, '/register'),
-                      textColor: Colors.black,
-                      borderColor: Colors.black,
-                    ),
+                    buildTextField(
+                        label: 'PASSWORD', controller: _passwordController),
+                    const SizedBox(height: 16),
+                    buildAuthButton(context, 'SIGN IN', Colors.black, () {}),
+                    const SizedBox(height: 16),
+                    Text('You don' 't have an account?',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 14,
+                        )),
+                    Text('Or',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 14,
+                        )),
+                    Text('Forgot password',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                        )),
+                    const SizedBox(height: 16),
+                    buildAuthButton(
+                        context, 'SIGN IN WITH GOOGLE', Colors.black, () {
+                      context.read<AuthBloc>().add(GoogleSignInRequested());
+                    }),
                   ],
                 ),
               ),
@@ -73,47 +99,16 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAuthButton(
-    BuildContext context,
-    String text,
-    Color color,
-    VoidCallback onPressed, {
-    Color textColor = Colors.white,
-    Color? borderColor,
-  }) {
-    return SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          foregroundColor: textColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: borderColor != null
-                ? BorderSide(color: borderColor)
-                : BorderSide.none,
-          ),
-          elevation: borderColor != null ? 0 : 2,
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: textColor,
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: BlocConsumer<AuthBloc, AuthState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is AuthSuccess) {
+            Navigator.pop(context); // Đóng BottomSheet khi đăng nhập thành công
+          }
+        },
         builder: (context, state) {
           return Stack(
             children: [
@@ -130,12 +125,16 @@ class DashboardScreen extends StatelessWidget {
               SafeArea(
                 child: Stack(
                   children: [
-                    Text(
-                      "Let's enjoy the fun",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 24, left: 8),
+                      child: Text(
+                        "Let's make your\ninvites",
+                        style: TextStyle(
+                          fontFamily: 'Aldrich',
+                          color: Colors.white,
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     Padding(
@@ -173,6 +172,7 @@ class DashboardScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              if (state is AuthLoading) const LoadingOverlay(),
             ],
           );
         },

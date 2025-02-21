@@ -23,6 +23,8 @@ class LoginScreen extends StatelessWidget {
             }
             if (state is AuthError) {
               Fluttertoast.showToast(msg: state.message);
+              print('11111');
+              print(state.message);
             }
           },
           builder: (context, state) {
