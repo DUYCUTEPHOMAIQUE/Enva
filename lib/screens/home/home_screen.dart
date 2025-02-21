@@ -41,8 +41,11 @@ class HomeScreen extends StatelessWidget {
               },
               child: Text("Print user"),
             ),
-            Image.network(SupabaseServices
-                .client.auth.currentUser!.userMetadata!['avatar_url']),
+            if (SupabaseServices
+                    .client.auth.currentUser!.userMetadata!['avatar_url'] !=
+                null)
+              Image.network(SupabaseServices
+                  .client.auth.currentUser!.userMetadata!['avatar_url']),
           ],
         ),
       ),

@@ -64,7 +64,14 @@ class DashboardScreen extends StatelessWidget {
                     buildTextField(
                         label: 'PASSWORD', controller: _passwordController),
                     const SizedBox(height: 16),
-                    buildAuthButton(context, 'SIGN IN', Colors.black, () {}),
+                    buildAuthButton(context, 'SIGN IN', Colors.black, () {
+                      context.read<AuthBloc>().add(
+                            EmailSignInRequested(
+                              _emailController.text.trim(),
+                              _passwordController.text.trim(),
+                            ),
+                          );
+                    }),
                     const SizedBox(height: 16),
                     Text('You don' 't have an account?',
                         textAlign: TextAlign.center,
