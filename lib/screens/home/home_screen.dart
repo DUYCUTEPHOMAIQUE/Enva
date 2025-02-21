@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
   final GoogleSignIn _googleSignIn =
       GoogleSignIn(clientId: dotenv.env['GOOGLE_CLIENT_ID']!);
   final FacebookAuth _facebookAuth = FacebookAuth.instance;
+  // final _supabaseService = SupabaseServices();
 
   // Hàm đăng nhập bằng Google
   Future<void> _signInWithGoogle() async {
@@ -107,26 +108,6 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
-              },
-              child: Text("Go to Login"),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _signInWithGoogle,
-              child: Text("Login with Google"),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _signInWithFacebook,
-              child: Text("Login with Facebook"),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(
               onPressed: _shareLink,
               child: Text("Share link"),
             ),
@@ -139,6 +120,26 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: _getData,
               child: Text("Get Data"),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () async {
+                await client.auth.signOut();
+                Fluttertoast.showToast(msg: "Sign out successfully");
+              },
+              child: Text("Sign Out"),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () async {
+                User? user = await SupabaseServices.getCurrentUser();
+                if (user != null) {
+                  Fluttertoast.showToast(
+                      msg:
+                          "User: ${user!.email} ${user.userMetadata!['avatar_url']}");
+                }
+              },
+              child: Text("Print user"),
             ),
           ],
         ),

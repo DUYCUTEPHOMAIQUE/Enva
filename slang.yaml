@@ -1,4 +1,8 @@
-# Configuration for the slang package
+base_locale: en
+fallback_strategy: base_locale
 input_directory: assets/i18n
-output_directory: lib/generated
-fallback_locale: en
+input_file_pattern: .i18n.json
+output_directory: assets/i18n
+output_file_name: translations.g.dart
+timestamp: false
+namespaces: false

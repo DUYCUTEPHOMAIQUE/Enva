@@ -1,4 +1,18 @@
 {
-  "hello": "Xin chào",
-  "welcome": "Chào mừng đến với Enva"
+  "common": {
+    "loading": "Đang tải...",
+    "error": "Lỗi",
+    "success": "Thành công"
+  },
+  "auth": {
+    "login": "Đăng nhập",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "signIn": "Đăng nhập",
+    "signInWithGoogle": "Đăng nhập bằng Google",
+    "signOut": "Đăng xuất",
+    "signUpSuccess": "Đăng ký thành công",
+    "signInSuccess": "Đăng nhập thành công",
+    "errorOccurred": "Đã xảy ra lỗi"
+  }
 }

@@ -1,7 +1,31 @@
-part of 'auth_bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class AuthState extends Equatable {
+abstract class AuthState extends Equatable {
+  const AuthState();
+
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
+}
+
+class AuthInitial extends AuthState {}
+
+class AuthLoading extends AuthState {}
+
+class AuthSuccess extends AuthState {
+  final User user;
+
+  const AuthSuccess(this.user);
+
+  @override
+  List<Object?> get props => [user];
+}
+
+class AuthError extends AuthState {
+  final String message;
+
+  const AuthError(this.message);
+
+  @override
+  List<Object?> get props => [message];
 }

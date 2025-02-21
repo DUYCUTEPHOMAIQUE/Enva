@@ -1,4 +1,18 @@
 {
-  "hello": "Hello",
-  "welcome": "Welcome to Enva"
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "auth": {
+    "login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign In",
+    "signInWithGoogle": "Sign in with Google",
+    "signOut": "Sign Out",
+    "signUpSuccess": "Sign up successfully",
+    "signInSuccess": "Sign in successfully",
+    "errorOccurred": "An error occurred"
+  }
 }
