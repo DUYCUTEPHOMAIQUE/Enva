@@ -1,9 +1,7 @@
-import 'package:enva/blocs/auth/auth_bloc.dart';
 import 'package:enva/models/card_model.dart';
 import 'package:enva/models/invite_model.dart';
 import 'package:enva/screens/screens.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -34,13 +32,10 @@ class EnvaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-        providers: <BlocProvider<dynamic>>[
-          BlocProvider<AuthBloc>(create: (context) => AuthBloc())
-        ],
-        child: const MaterialApp(
-            title: 'Enva',
-            debugShowCheckedModeBanner: false,
-            home: AuthWrapper()));
+    return const MaterialApp(
+      title: 'Enva',
+      debugShowCheckedModeBanner: false,
+      home: AuthWrapper(),
+    );
   }
 }

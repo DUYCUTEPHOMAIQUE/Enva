@@ -16,7 +16,7 @@ class AuthWrapper extends StatelessWidget {
             return HomeScreen();
           }
         }
-        return LoginScreen();
+        return DashboardScreen();
       },
     );
   }
