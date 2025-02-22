@@ -1,6 +1,7 @@
 import 'package:enva/blocs/auth/auth_bloc.dart';
 import 'package:enva/models/card_model.dart';
 import 'package:enva/models/invite_model.dart';
+import 'package:enva/screens/home/home_screen.dart';
 import 'package:enva/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,10 +37,11 @@ class EnvaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [BlocProvider(create: (_) => AuthBloc())],
-        child: const MaterialApp(
+        child: MaterialApp(
           title: 'Enva',
+          theme: ThemeData.dark(),
           debugShowCheckedModeBanner: false,
-          home: AuthWrapper(),
+          home: const AuthWrapper(),
         ));
   }
 }
