@@ -28,6 +28,7 @@ dependencies:
   supabase_flutter: ^2.8.3
   flutter_localizations: # add this
     sdk: flutter
+  rive: ^0.13.20
 
 dev_dependencies:
   flutter_test:
@@ -40,3 +41,10 @@ flutter:
   uses-material-design: true
   assets:
     - .env
+    - assets/rive/
+    - assets/fonts/
+  fonts:
+    - family: Aldrich
+      fonts:
+        - asset: assets/fonts/Aldrich-Regular.ttf
+          weight: 400
