@@ -1,3 +1,4 @@
+import 'package:enva/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -35,6 +36,10 @@ class _LoginScreenState extends State<LoginScreen> {
             msg: "Login successfully ${response.user!.userMetadata!['name']}");
         setState(() {
           _errorMessage = response.session!.user!.email!;
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+          );
         });
       } else {
         // Nếu đăng nhập thành công, chuyển đến màn hình chính hoặc trang người dùng
