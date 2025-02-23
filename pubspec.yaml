@@ -43,6 +43,7 @@ flutter:
     - .env
     - assets/rive/
     - assets/fonts/
+    - assets/
   fonts:
     - family: Aldrich
       fonts:
